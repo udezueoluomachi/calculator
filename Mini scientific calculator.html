@@ -1,0 +1,353 @@
+<!DOCTYPE HTML>
+<html lang="en" dir="ltr">
+  <head>
+    <title>Mini Scientific Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/all.css"/>
+    <link rel="stylesheet" href="/animate.css"/>
+    <script src="./jquery-3.6.0.min.js"></script>
+    <style type="text/css">
+      *{
+        box-sizing: border-box;
+        font-family: Arial, Sans-Serif;
+        letter-spacing: 2px;
+        margin: 0;
+        padding: 0;
+        color: #1A1918;
+      }
+      ::placeholder {
+        color: #303A30;
+      }
+      .btnsContainer {
+        background: #00000044;
+        position: fixed;
+        top: 30vh;
+        height: 70vh;
+        width: 100vw;
+        box-shadow: 0px -3px 8px #00000044;
+        border-radius: 20px 20px 0px 0px;
+      }/*
+      .log {
+        border-radius: 20px 0px 0px 0px;
+      }
+      .tan {
+        border-radius: 0px 20px 0px 0px;
+      }*/
+      .rowBtns {
+        height: 11.67vh;
+        display: flex;
+        justify-items: center;
+      }
+      button {
+        height: 100%;
+        width: 25%;
+        font-size: 7vw;
+        border-radius: 0;
+        border: 0.2px solid #DFE2E2;
+        background: #FFFFFF;
+        cursor: pointer;
+      }
+      .inputAndOutput {
+        height: 30vh;
+        width: 100vw;
+        position: fixed;
+        top: 0;
+      }
+      input {
+        height: 15vh;
+        width: 100%;
+        text-align: right;
+        border: none;
+        border-radius: 0;
+        font-size: 20vw;
+        background: #DFE2E2;
+        color: #303A30;
+        overflow-x: auto;
+      }
+      .output {
+        font-size: 16vw;
+        color: #1A1918;
+      }
+      .scientificFunctions button, .signs button, .sign{
+        color: #FF8800;
+      }
+      .equal {
+        background: #FF8800;
+        color: #FFFFFF;
+      }
+      .menu-toggle {
+        position: fixed;
+        top: 2%;
+        margin-left: 2%;
+        z-index: 5;
+        height: 40px;
+        width: 40px;
+        cursor: pointer;
+        background: transparent;
+      }
+      .menu-toggle .horizon {
+        box-shadow: 1px 1px 8px #00000044;
+        height: 20%;
+        width: 93.34%;
+        background: #FF8800;
+        margin: 3.33%;
+        border-radius: 20%;
+        opacity: 0.9;
+      }
+      .menu {
+        height: 0;
+        width: 100vw;
+        position: fixed;
+        top: 0;
+        transition: height 0.4s;
+        background: #FFFFFF;
+        z-index: 3;
+        overflow: scroll;
+      }
+      #historyContainer {
+        overflow: scroll;
+      }
+      h1 {
+        color: #FF7500;
+        text-align: center;
+        margin: 12px;
+      }
+      .calculator {
+        transform: rotate(30deg);
+        color: #FF7500;
+      }
+      h2, .trash{
+        color: #343A34;
+      }
+      h2 {
+        margin: 15px 0px 0px 8px;
+      }
+      .trash {
+        position: absolute;
+        right: 0;
+        margin-right: 8px;
+        cursor: pointer;
+        padding: 0px 10px 0px 10px;
+      }
+      .inputValForHis, .outForHis {
+        text-align: right;
+        color: #797970;
+      }
+      .inputValForHis {
+        font-size: 30px;
+      }
+      .outForHis {
+        font-size: 25px;
+      }
+      code {
+        position: fixed;
+        bottom: 0;
+        z-index: ;
+        opacity: 0.8;
+      }
+      em {
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="body">
+      <div class="menu-toggle">
+        <div class="horizon"></div>
+        <div class="horizon"></div>
+        <div class="horizon"></div>
+      </div>
+      <div class="menu">
+        <h1> Mini Scientific Calculator <i class="fas fa-calculator calculator"></i> <em>Version 1.01</em>
+        </h1>
+        <hr/>
+        <h2> History <i class="fas fa-trash-alt trash"></i> </h2>
+        <div id="historyContainer"></div>
+      </div>
+      <div class="inputAndOutput">
+        <input class="input" disabled="disabled" placeholder="0"/><input id="processor">
+        <br/>
+        <input class="output" disabled="disabled">
+      </div>
+      <div class="btnsContainer">
+        <div class="rowBtns scientificFunctions">
+          <button class="log" id="log">log</button>
+          <button id="sin">sin</button>
+          <button id="cos">cos</button>
+          <button class="tan" id="tan">tan</button>
+        </div>
+        <div class="rowBtns signs">
+          <button id="AC">AC</button>
+          <button id="lbrac">(</button>
+          <button id="rbrac">)</button>
+          <button id="backspace"class="fas fa-backspace"></button>
+        </div>
+        <div class="rowBtns">
+          <button class="num" id="7">7</button>
+          <button class="num" id="8">8</button>
+          <button class="num" id="9">9</button>
+          <button class="sign" id="divide">÷</button>
+        </div>
+        <div class="rowBtns">
+          <button class="num" id="4">4</button>
+          <button class="num" id="5">5</button>
+          <button class="num" id="6">6</button>
+          <button class="sign" id="multiply">×</button>
+        </div>
+        <div class="rowBtns">
+          <button class="num" id="1">1</button>
+          <button class="num" id="2">2</button>
+          <button class="num" id="3">3</button>
+          <button class="sign" id="plus">+</button>
+        </div>
+        <div class="rowBtns">
+          <button class="num" id="0">0</button>
+          <button class="num" id="decimalPt">.</button>
+          <button class="equal" id="equal">=</button>
+          <button class="sign" id="minus">-</button>
+        </div>
+      </div>
+    </div>
+    <code>Udezue Oluomachi Chimaobi</code>
+    <script type="text/javascript">
+      //I am using jQuery 3.6.0
+      //Variables
+      let buttons, input, output, processor, outputIsEmpty, historyContainer;
+      $(e=>{
+        buttons = [$("button")];
+        input = $(".input");
+        output = $(".output");
+        processor = $("#processor");
+        processor.hide();
+        processorValue = processor.val();
+        inputValue = input.val();
+        outputValue = output.val();
+        outputIsEmpty = true;
+        historyContainer = $("#historyContainer");
+        try {
+          for(let i=0; i<=buttons.length;i++){
+          buttons[i].click((e)=>{
+          getIdAppendAndContinue(e.target.id);
+        });
+        }
+        }
+        catch(err) {
+         // alert(err);
+        }
+          const btnIdArr = ["log","sin","cos","tan","AC","lbrac","rbrac","backspace","7","8","9","divide","4","5","6","multiply","1","2","3","plus","0","decimalPt","equal","minus"];
+          const btnRealTextArrToProcess = ["log(","sin(","cos(","tan(","AC","(",")","backspace","7","8","9","/","4","5","6","*","1","2","3","+","0",".","equal","-"];
+          const btnRealTextArr = ["log(","sin(","cos(","tan(","AC","(",")","backspace","7","8","9","÷","4","5","6","×","1","2","3","+","0",".","equal","-"];
+        function getIdAppendAndContinue(btnId){
+          switch(btnId) {
+            case "equal" :{
+              try {
+                processorValue = eval(processorValue);
+                output.val(`${processorValue}`);
+                outputIsEmpty = false;
+              }
+              catch(err) {
+                output.val("syntax eror");
+              }
+              updateHistory();
+            }
+            break;
+            case "AC" :{
+              AC();
+            }
+            break;
+            case "backspace":{
+              backspace();
+            }
+            break;
+            default:{
+              let indexOfBtnId = btnIdArr.indexOf(btnId);
+              if(!outputIsEmpty) {
+                AC();
+                outputIsEmpty = true;
+              }
+              inputValue += btnRealTextArr[indexOfBtnId];
+              processorValue += btnRealTextArrToProcess[indexOfBtnId];
+              input.val(`${inputValue}`);
+            }
+          }
+          function AC() {
+              inputValue = "";
+              input.val("");
+              processor.val("");
+              processorValue = "";
+              outputValue = "";
+              output.val(`${outputValue}`);
+            }
+          function backspace(){
+              inputValue = inputValue.slice(0,-1);
+              input.val(`${inputValue}`);
+              processorValue = processorValue.slice(0,-1);
+              processor.val(`${processorValue}`);
+            }
+        }
+        function log(num) {
+          let log = Math.log10(num);
+          return log;
+        }
+        function tan(angle) {
+          let tan = Math.tan(angle);
+          return tan;
+        }
+        function sin(angle) {
+          let sin = Math.sin(angle * Math.PI / 180);
+          return sin;
+        }
+        function cos(angle) {
+          let cos = Math.cos(angle * Math.PI / 180);
+          return cos;
+        }
+        function updateHistory(){
+          let dataToInsert = `<div class="hisData">
+          <p class="inputValForHis">${inputValue}</p>
+          <p class="outForHis">${output.val()}</p>
+          </div>
+          <hr/>`;
+          historyContainer.html(historyContainer.html()+dataToInsert);
+          saveHistory();
+        }
+        function showHistory() {
+          let history = localStorage.getItem("history");
+          historyContainer.html(`${history}`);
+        }
+        function saveHistory() {
+          localStorage.setItem(`history`,`${historyContainer.html()}`);
+        }
+        function clearHistory() {
+          localStorage.removItem("history");
+          historyContainer.html("");
+        }
+        $(".trash").click(e=>{
+          clearHistory();
+        });
+        window.onload = e=>{
+          showHistory();
+        }; 
+        let menuToggle = $(".menu-toggle");
+        let menu = $(".menu");
+        let menuIsNotDisplayed = true;
+        menuToggle.click(e=>{
+          if(menuIsNotDisplayed) {
+            menu.css({"height" : "100vh"});
+            menuIsNotDisplayed = false;
+          }
+          else {
+            menu.css({"height" : "0vh"});
+            menuIsNotDisplayed = true;
+          }
+        });
+        menu.onscroll = function() {
+          console.log(this.scrollY);
+        };
+      });
+      while (inputValue != "") {
+        alert(inputValue)
+      }
+    </script>
+  </body>
+</html>
